@@ -457,12 +457,13 @@ impl<'config, 'precompiles, S: StackState<'config>, P: PrecompileSet>
 		gas_limit: u64,
 		access_list: Vec<(H160, Vec<H256>)>, // See EIP-2930
 	) -> (ExitReason, Vec<u8>) {
+		let address = self.create_address(CreateScheme::Legacy { caller });
 		event!(TransactCreate {
 			caller,
 			value,
 			init_code: &init_code,
 			gas_limit,
-			address: self.create_address(CreateScheme::Legacy { caller }),
+			address,
 		});
 
 		if let Err(e) = self.record_create_transaction_cost(&init_code, &access_list) {
