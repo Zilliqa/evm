@@ -582,6 +582,7 @@ impl<'config, 'precompiles, S: StackState<'config>, P: PrecompileSet>
 			caller,
 			address,
 			apparent_value: value,
+			ctx_caller: caller,
 		};
 
 		match self.call_inner(
@@ -753,6 +754,7 @@ impl<'config, 'precompiles, S: StackState<'config>, P: PrecompileSet>
 			address,
 			caller,
 			apparent_value: value,
+			ctx_caller: caller,
 		};
 		let transfer = Transfer {
 			source: caller,

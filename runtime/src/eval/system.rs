@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use super::Control;
 use crate::{
 	CallScheme, Capture, Context, CreateScheme, ExitError, ExitFatal, ExitReason, ExitSucceed,
@@ -398,16 +400,19 @@ pub fn call<H: Handler>(runtime: &mut Runtime, scheme: CallScheme, handler: &mut
 			address: to.into(),
 			caller: runtime.context.address,
 			apparent_value: value,
+			ctx_caller: runtime.context.caller,
 		},
 		CallScheme::CallCode => Context {
 			address: runtime.context.address,
 			caller: runtime.context.address,
 			apparent_value: value,
+			ctx_caller: runtime.context.caller,
 		},
 		CallScheme::DelegateCall => Context {
 			address: runtime.context.address,
 			caller: runtime.context.caller,
 			apparent_value: runtime.context.apparent_value,
+			ctx_caller: runtime.context.caller,
 		},
 	};
 
@@ -427,7 +432,7 @@ pub fn call<H: Handler>(runtime: &mut Runtime, scheme: CallScheme, handler: &mut
 		None
 	};
 
-	let target = if scheme == CallScheme::CallCode {
+	let _target = if scheme == CallScheme::CallCode {
 		runtime.context.address
 	} else {
 		to.into()
@@ -436,7 +441,7 @@ pub fn call<H: Handler>(runtime: &mut Runtime, scheme: CallScheme, handler: &mut
 	event!(TransactTransfer {
 		call_type: &format!("{:?}", scheme).to_uppercase(),
 		address: runtime.context.address,
-		target: target.into(),
+		target: _target.into(),
 		balance: value,
 		input: &format!("0x{:}", u8_vec_to_hex(&input)),
 	});

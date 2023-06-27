@@ -43,4 +43,6 @@ pub struct Context {
 	pub caller: H160,
 	/// Apparent value of the EVM.
 	pub apparent_value: U256,
+	/// msg.sender value seen before call() has been made. In delegatecall it will be just a caller.
+	pub ctx_caller: H160,
 }
